@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hit &amp; Blow Mastermind</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background"></div>
+    <main class="game-shell">
+        <header class="game-header">
+            <h1>Hit &amp; Blow</h1>
+            <p class="tagline">4桁の数字を推理して勝利を掴もう！</p>
+        </header>
+
+        <section class="status-panel">
+            <div class="status-card attempts">
+                <span class="label">トライ回数</span>
+                <span id="attempt-count" class="value">0</span>
+            </div>
+            <div class="status-card result">
+                <span class="label">最新結果</span>
+                <span id="latest-result" class="value">-</span>
+            </div>
+            <button id="restart" class="primary-button" type="button">新しいゲーム</button>
+        </section>
+
+        <section class="input-panel">
+            <label for="guess-input" class="instruction">
+                4桁の数字を入力してください（0〜9、重複可）
+            </label>
+            <form id="guess-form" autocomplete="off">
+                <div class="input-wrapper">
+                    <input id="guess-input" name="guess" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" placeholder="0000" required>
+                    <button class="primary-button" type="submit">判定する</button>
+                </div>
+            </form>
+            <p id="feedback" class="feedback"></p>
+        </section>
+
+        <section class="history-panel">
+            <h2>履歴</h2>
+            <ul id="history-list" class="history-list"></ul>
+        </section>
+    </main>
+
+    <footer class="credits">
+        <p>CPUが出題した4桁の数字を推理して、ヒット（位置と数字が一致）とブロー（数字のみ一致）を頼りに真実に迫ろう！</p>
+    </footer>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
