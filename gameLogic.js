@@ -1,13 +1,51 @@
 export const SECRET_LENGTH = 4;
+export const SYMBOL_POOL = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
 
-export function generateSecretNumber() {
-    return Array.from({ length: SECRET_LENGTH }, () => Math.floor(Math.random() * 10)).join('');
+export function getAvailableSymbols(count) {
+    if (!Number.isInteger(count)) {
+        throw new Error('Symbol count must be an integer.');
+    }
+    if (count < 1 || count > SYMBOL_POOL.length) {
+        throw new Error(`Symbol count must be between 1 and ${SYMBOL_POOL.length}.`);
+    }
+    return SYMBOL_POOL.slice(0, count);
+}
+
+export function generateSecretNumber(options = {}) {
+    const {
+        allowDuplicates = false,
+        symbolCount = 10,
+    } = options;
+
+    const availableSymbols = getAvailableSymbols(symbolCount);
+
+    if (!allowDuplicates && availableSymbols.length < SECRET_LENGTH) {
+        throw new Error('Cannot generate a unique secret with the requested symbol count.');
+    }
+
+    if (allowDuplicates) {
+        return Array.from({ length: SECRET_LENGTH }, () => {
+            const index = Math.floor(Math.random() * availableSymbols.length);
+            return availableSymbols[index];
+        }).join('');
+    }
+
+    const pool = [...availableSymbols];
+    for (let i = pool.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    return pool.slice(0, SECRET_LENGTH).join('');
 }
 
 export function evaluateGuess(guess, secret) {
     if (guess.length !== SECRET_LENGTH || secret.length !== SECRET_LENGTH) {
         throw new Error('Guess and secret must be 4 characters long.');
     }
+
+    const normalizedGuess = guess.toUpperCase();
+    const normalizedSecret = secret.toUpperCase();
 
     let hits = 0;
     let blows = 0;
@@ -16,11 +54,13 @@ export function evaluateGuess(guess, secret) {
     const guessCounts = {};
 
     for (let i = 0; i < SECRET_LENGTH; i += 1) {
-        if (guess[i] === secret[i]) {
+        if (normalizedGuess[i] === normalizedSecret[i]) {
             hits += 1;
         }
-        secretCounts[secret[i]] = (secretCounts[secret[i]] || 0) + 1;
-        guessCounts[guess[i]] = (guessCounts[guess[i]] || 0) + 1;
+        const secretChar = normalizedSecret[i];
+        const guessChar = normalizedGuess[i];
+        secretCounts[secretChar] = (secretCounts[secretChar] || 0) + 1;
+        guessCounts[guessChar] = (guessCounts[guessChar] || 0) + 1;
     }
 
     Object.keys(guessCounts).forEach((digit) => {
