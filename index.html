@@ -17,6 +17,34 @@
             <p class="tagline">4桁の数字を推理して勝利を掴もう！</p>
         </header>
 
+        <section class="options-panel">
+            <h2>オプション</h2>
+            <form id="options-form">
+                <fieldset class="option-group">
+                    <legend class="option-label">数字の重複</legend>
+                    <label><input type="radio" name="duplicates" value="disallow" checked> 重複なし</label>
+                    <label><input type="radio" name="duplicates" value="allow"> 重複あり</label>
+                </fieldset>
+                <label class="option-group" for="symbol-count">
+                    <span class="option-label">利用する文字の種類</span>
+                    <select id="symbol-count" name="symbolCount">
+                        <option value="6">6 種類（0〜5）</option>
+                        <option value="7">7 種類（0〜6）</option>
+                        <option value="8">8 種類（0〜7）</option>
+                        <option value="9">9 種類（0〜8）</option>
+                        <option value="10" selected>10 種類（0〜9）</option>
+                        <option value="11">11 種類（0〜9, A）</option>
+                        <option value="12">12 種類（0〜9, A〜B）</option>
+                        <option value="13">13 種類（0〜9, A〜C）</option>
+                        <option value="14">14 種類（0〜9, A〜D）</option>
+                        <option value="15">15 種類（0〜9, A〜E）</option>
+                        <option value="16">16 種類（0〜9, A〜F）</option>
+                    </select>
+                </label>
+                <p class="option-note">設定を変更すると新しいゲームが開始されます。</p>
+            </form>
+        </section>
+
         <section class="status-panel">
             <div class="status-card attempts">
                 <span class="label">トライ回数</span>
@@ -31,11 +59,11 @@
 
         <section class="input-panel">
             <label for="guess-input" class="instruction">
-                4桁の数字を入力してください（0〜9、重複可）
+                4桁の文字列を入力してください（使用可能: 0〜9／同じ文字の使用不可）
             </label>
             <form id="guess-form" autocomplete="off">
                 <div class="input-wrapper">
-                    <input id="guess-input" name="guess" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" placeholder="0000" required>
+                    <input id="guess-input" name="guess" maxlength="4" minlength="4" placeholder="0123" required>
                     <button class="primary-button" type="submit">判定する</button>
                 </div>
             </form>
